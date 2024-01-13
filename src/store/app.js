@@ -5,7 +5,8 @@ import { handleSuccessAuthentication } from '../utils/function.js';
 
 export const useAppStore = defineStore('app', {
   state: () => ({
-    snackbar: false
+    snackbar: false,
+    snackbarInfo: {}
   }),
   actions: {
     openSnackbar(value) {
@@ -46,6 +47,16 @@ export const useAppStore = defineStore('app', {
         return user;
       }
       return null;
+    },
+    updateAvatar(avatar) {
+      const response = axios.post('/User/update-avatar', avatar)
+        .then((response) => {
+          return response.data;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
     },
     async testRoles() {
       try {

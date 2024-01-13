@@ -148,6 +148,10 @@
             }
             const response = await this.appStore.register(payload);
             if (response.isSuccess) {
+              this.appStore.snackbarInfo = {
+                message: 'Account was created. You can now log in!',
+                color: 'success'
+              }
                 this.appStore.openSnackbar(true);
                 this.$router.push({ name: 'Login' });
             } else {

@@ -1,11 +1,12 @@
 <template>
   <v-snackbar
+    v-if="appStore.snackbar"
     v-model="appStore.snackbar"
-    color="success"
+    :color="appStore.snackbarInfo.color"
     @update:model-value="value => appStore.openSnackbar(value)"
   >
     <v-icon left>mdi-check-circle</v-icon>
-    Account was created. You can now log in!
+    {{ appStore.snackbarInfo.message  }}
   </v-snackbar>
   <div class="d-flex justify-center align-center">
     <v-img

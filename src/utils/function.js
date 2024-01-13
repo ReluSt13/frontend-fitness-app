@@ -9,6 +9,7 @@ function handleSuccessAuthentication(result) {
         name: decodedToken[Claims.NameTokenKey],
         email: decodedToken[Claims.EmailTokenKey],
         roles: decodedToken[Claims.RoleTokenKey],
+        avatar: decodedToken[Claims.AvatarTokenKey],
         token: result.response
       };
       localStorage.setItem('user', JSON.stringify(user));
