@@ -7,7 +7,9 @@ const Claims = {
 };
 
 const Event = {
-    DELETE_POST: 'delete:post'
+    CREATE_POST: 'create:post',
+    DELETE_POST: 'delete:post',
+    CLOSE_MODAL: 'close:modal'
 }
 
 export {

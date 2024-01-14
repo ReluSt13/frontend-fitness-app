@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <SideBar></SideBar>
+    <SideBar @create:post="handleCreatePost"></SideBar>
     <v-main class="d-flex flex-column align-center justify-center">
       <SocialPost
         v-for="post in posts"
@@ -38,9 +38,15 @@
     },
     methods: {
       async handleDeletePost(post) {
-        const result = await this.appStore.deletePost({ postId: post.Id });
+        const result = await this.appStore.deletePost(post.Id);
         if (result.isSuccess) {
           this.posts = this.posts.filter(p => p.Id !== post.Id);
+        }
+      },
+      async handleCreatePost(requestBody) {
+        const result = await this.appStore.createPost(requestBody);
+        if (result.isSuccess) {
+          this.posts.unshift(result.response);
         }
       }
     },

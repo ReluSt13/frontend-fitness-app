@@ -73,8 +73,23 @@ export const useAppStore = defineStore('app', {
         });
       return response;
     },
+    createPost(payload) {
+      const response = axios.post('/createPost', payload)
+        .then((response) => {
+          const parsedResponse = {
+            isSuccess: response.data.isSuccess,
+            response: JSON.parse(response.data.response),
+            errors: response.data.error
+          }
+          return parsedResponse;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
+    },
     deletePost(id) {
-      const response = axios.post('/deletePost', id)
+      const response = axios.delete('/deletePost', { data: { postId: id } })
         .then((response) => {
           return response.data;
         })

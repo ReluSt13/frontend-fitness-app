@@ -35,11 +35,16 @@
                                   variant="plain"
                                 ></v-btn>
                             </template>
-                            <v-list>
+                            <v-list elevation="10">
                                 <v-list-item
                                     v-for="(item, index) in items"
                                     :key="index"
+                                    :base-color="item.color"
+                                    density="compact"
+                                    :prepend-icon="item.icon"
+                                    :slim="true"
                                     :value="index"
+                                    @click="item.action"
                                 >
                                     <v-list-item-title>{{ item.title }}</v-list-item-title>
                                 </v-list-item>
@@ -91,12 +96,7 @@ export default {
     data() {
         return {
             user: undefined,
-            items: [
-                { title: 'Click Me' },
-                { title: 'Click Me' },
-                { title: 'Click Me' },
-                { title: 'Click Me 2' },
-            ]
+            items: []
         }
     },
     computed: {
@@ -106,6 +106,25 @@ export default {
     },
     mounted() {
         this.user = this.appStore.getUser();
+        if (this.isOwner) {
+            this.items.push({
+                title: 'Edit',
+                action: this.handleEditPost,
+                icon: 'mdi-pencil'
+            });
+            this.items.push({
+                title: 'Delete',
+                action: this.handleDeletePost,
+                icon: 'mdi-delete',
+                color: 'red-accent-4'
+            });
+        } else {
+            this.items.push({
+                title: 'Report',
+                action: this.handleReportPost,
+                icon: 'mdi-flag'
+            });
+        }
     },
     methods: {
         formatShortDate(dateString) {
@@ -118,7 +137,10 @@ export default {
                 date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
         },
         handleDeletePost() {
-            this.$emit('delete:post', this.post);
+            this.$emit(Event.DELETE_POST, this.post);
+        },
+        handleEditPost() {
+
         }
     },
     setup() {
