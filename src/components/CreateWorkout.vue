@@ -1,7 +1,12 @@
 <template>
   <div class="p-10">
-    <v-form @submit.prevent="submitWorkoutForm">
-      <v-text-field v-model="workoutName" label="Workout Name"></v-text-field>
+    <v-form v-model="formStatus" @submit.prevent="submitWorkoutForm">
+      <v-text-field
+        v-model="workoutName"
+        label="Workout Name"
+        required
+        :rules="[(v) => !!v || 'Workout name is required']"
+      ></v-text-field>
 
       <!-- Exercise List -->
       <v-row v-for="(exercise, index) in exercises" :key="index">
@@ -12,6 +17,8 @@
             :items="exerciseNames"
             label="Exercise Name"
             class="exercise-select"
+            required
+            :rules="[(v) => !!v || 'Exercise name is required']"
           ></v-select>
         </v-col>
         <v-col>
@@ -20,6 +27,9 @@
             v-model="exercise.reps"
             label="Reps"
             type="number"
+            class="reps-select"
+            required
+            :rules="[(v) => !!v || 'Required']"
           ></v-text-field>
         </v-col>
         <v-col>
@@ -29,6 +39,8 @@
             label="Weight (kg)"
             type="number"
             class="weight-select"
+            required
+            :rules="[(v) => !!v || 'Required']"
           ></v-text-field>
         </v-col>
         <v-col>
@@ -41,17 +53,19 @@
 
       <v-btn
         @click="addExercise"
-        color="cyan-accent-4"
-        style="width: 150px; margin: 0 auto; display: block"
-        >Add Exercise</v-btn
+        color="cyan-darken-4"
+        variant="outlined"
+        style="margin: 0 auto; display: block"
+        >Add exercise</v-btn
       >
 
-      <v-container class="d-flex justify-space-around mt-2">
+      <v-container class="d-flex justify-space-around">
         <v-btn
           type="submit"
           color="orange-darken-4"
           variant="outlined"
           class="ma-2"
+          :disabled="!formStatus"
           >Submit</v-btn
         >
         <v-btn
@@ -70,6 +84,7 @@
 export default {
   data() {
     return {
+      formStatus: undefined,
       workoutName: "",
       exercises: [{ name: "", reps: "", weight: "" }],
       exerciseNames: ["Exercise 1", "Exercise 2", "Exercise 3"], // Replace with your actual exercise names
@@ -87,8 +102,10 @@ export default {
     submitWorkoutForm() {
       // Handle form submission logic here
       // You can access the workoutName and exercises data and perform further actions
-      console.log("Workout Name:", this.workoutName);
-      console.log("Exercises:", this.exercises);
+      if (this.formStatus) {
+        console.log("Workout Name:", this.workoutName);
+        console.log("Exercises:", this.exercises);
+      }
       // Add logic to send data to the server or perform other actions
     },
     cancelWorkout() {
@@ -105,6 +122,9 @@ export default {
 }
 .weight-select {
   min-width: 150px;
+}
+.reps-select {
+  min-width: 100px;
 }
 
 .p-10 {
