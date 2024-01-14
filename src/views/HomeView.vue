@@ -1,12 +1,55 @@
 <template>
-  <HelloWorld />
+  <v-app>
+    <SideBar></SideBar>
+    <v-main class="d-flex flex-column align-center justify-center">
+      <SocialPost
+        v-for="post in posts"
+        :key="post.id"
+        :post="post"
+        style="max-width: 600px;"
+        @delete:post="handleDeletePost"
+      ></SocialPost>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-  import HelloWorld from '@/components/HelloWorld.vue'
+  import SideBar from '@/components/SideBar.vue'
+  import SocialPost from '@/components/SocialPost.vue'
+  import { useAppStore } from '@/store/app.js'
+
   export default {
     components: {
-      HelloWorld
+      SideBar,
+      SocialPost
+    },
+    data() {
+      return {
+        user: {},
+        posts: []
+      }
+    },
+    async created() {
+      this.user = this.appStore.getUser();
+      const postsResult = await this.appStore.getPosts();
+      if (postsResult.isSuccess) {
+        this.posts = postsResult.response;
+      }
+    },
+    methods: {
+      async handleDeletePost(post) {
+        const result = await this.appStore.deletePost({ postId: post.Id });
+        if (result.isSuccess) {
+          this.posts = this.posts.filter(p => p.Id !== post.Id);
+        }
+      }
+    },
+    setup() {
+      const appStore = useAppStore();
+
+      return {
+        appStore
+      }
     }
   }
 </script>

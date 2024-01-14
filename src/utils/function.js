@@ -6,6 +6,7 @@ function handleSuccessAuthentication(result) {
     if (result !== null && result.isSuccess && result.response.length > 1) {
       const decodedToken = jwtDecode(result.response);
       const user = {
+        id: decodedToken[Claims.NameIdentifierTokenKey],
         name: decodedToken[Claims.NameTokenKey],
         email: decodedToken[Claims.EmailTokenKey],
         roles: decodedToken[Claims.RoleTokenKey],

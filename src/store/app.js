@@ -58,13 +58,30 @@ export const useAppStore = defineStore('app', {
         });
       return response;
     },
-    async testRoles() {
-      try {
-        const response = await axios.get('/WeatherForecast/GetWeatherForecastForAdminsOnly');
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
+    getPosts() {
+      const response = axios.get('/getAllPosts')
+        .then((response) => {
+          const parsedResponse = {
+            isSuccess: response.data.isSuccess,
+            response: JSON.parse(response.data.response),
+            errors: response.data.error
+          }
+          return parsedResponse;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
+    },
+    deletePost(id) {
+      const response = axios.post('/deletePost', id)
+        .then((response) => {
+          return response.data;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
     }
   }
 })
