@@ -9,7 +9,9 @@
             <div class="text-body-1 mt-2">Welcome, <span class="text-deep-orange-darken-2">{{ user?.name }}</span> ({{ user?.roles }})</div>
         </v-container>
         <v-divider></v-divider>
+
         <create-post @create:post="handleCreatePost"></create-post>
+
         <v-list color="transparent">
           <v-list-item prepend-icon="mdi-view-dashboard" title="Dashboard"></v-list-item>
           <v-list-item prepend-icon="mdi-account-box" title="Account"></v-list-item>

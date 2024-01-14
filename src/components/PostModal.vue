@@ -49,7 +49,9 @@
               color="deep-orange"
               :disabled="!canSubmit"
               @click="handleSubmit"
-            >Post</v-btn>
+            >
+              {{ btnText }}
+            </v-btn>
         </v-col>
     </v-row>
   </v-container>
@@ -60,11 +62,18 @@ import { useAppStore } from '../store/app.js';
 import { Event } from '../utils/constant.js';
 
 export default {
+    props: {
+        post: {
+            type: Object
+        }
+    },
     emits: [Event.CLOSE_MODAL, Event.CREATE_POST],
     data() {
         return {
             postContent: undefined,
             postImage: undefined,
+            postId: undefined,
+            btnText: 'Post',
             imageRule: [
                 (value) => {
                     const pattern = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g;
@@ -77,6 +86,14 @@ export default {
             ]
         }
     },
+    mounted() {
+        if (this.post) {
+            this.btnText = 'Edit';
+            this.postContent = this.post.Content;
+            this.postImage = this.post.Image;
+            this.postId = this.post.Id;
+        }
+    },
     computed: {
         canSubmit() {
             return this.postContent && this.postContent.length > 0 && (!this.postImage || this.imageRule[0](this.postImage) === true);
@@ -87,13 +104,21 @@ export default {
             this.$emit(Event.CLOSE_MODAL);
         },
         handleSubmit() {
-            const requestBody = {
-                content: this.postContent
+            const requestBody = {}
+            if (this.postContent) {
+                requestBody.content = this.postContent;
             }
             if (this.postImage) {
                 requestBody.image = this.postImage;
             }
-            this.$emit(Event.CREATE_POST, requestBody);
+            if (this.postId) {
+                requestBody.postId = this.postId;
+            }
+            if (requestBody.postId) {
+                this.$emit(Event.EDIT_POST, requestBody);
+            } else {
+                this.$emit(Event.CREATE_POST, requestBody);
+            }
             this.$emit(Event.CLOSE_MODAL);
         }
     },

@@ -8,6 +8,7 @@
         :post="post"
         style="max-width: 600px;"
         @delete:post="handleDeletePost"
+        @edit:post="handleEditPost"
       ></SocialPost>
     </v-main>
   </v-app>
@@ -47,6 +48,14 @@
         const result = await this.appStore.createPost(requestBody);
         if (result.isSuccess) {
           this.posts.unshift(result.response);
+        }
+      },
+      async handleEditPost(requestBody) {
+        const result = await this.appStore.editPost(requestBody);
+        if (result.isSuccess) {
+          const index = this.posts.findIndex(p => p.Id === requestBody.postId);
+          this.posts[index].Content = requestBody.content;
+          this.posts[index].Image = requestBody.image;
         }
       }
     },

@@ -97,6 +97,16 @@ export const useAppStore = defineStore('app', {
           return error.response.data;
         });
       return response;
-    }
+    },
+    editPost(payload) {
+      const response = axios.put('/updatePost', payload)
+        .then((response) => {
+          return response.data;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
+    },
   }
 })

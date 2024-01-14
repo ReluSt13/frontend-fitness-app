@@ -9,6 +9,7 @@ const Claims = {
 const Event = {
     CREATE_POST: 'create:post',
     DELETE_POST: 'delete:post',
+    EDIT_POST: 'edit:post',
     CLOSE_MODAL: 'close:modal'
 }
 

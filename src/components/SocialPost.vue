@@ -26,7 +26,7 @@
                         </template>
                     </v-tooltip>
                     <div class="d-flex flex-grow-1 justify-end">
-                        <v-menu>
+                        <v-menu :close-on-content-click="false">
                             <template v-slot:activator="{ props }">
                                 <v-btn
                                   v-bind="props"
@@ -41,12 +41,15 @@
                                     :key="index"
                                     :base-color="item.color"
                                     density="compact"
-                                    :prepend-icon="item.icon"
                                     :slim="true"
                                     :value="index"
                                     @click="item.action"
                                 >
-                                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                                    <template #prepend v-if="item.title !== 'Edit'">
+                                        <v-icon :color="item.color">{{ item.icon }}</v-icon>
+                                    </template>
+                                    <v-list-item-title v-if="item.title !== 'Edit'">{{ item.title }}</v-list-item-title>
+                                    <edit-post v-else :post="post" @edit:post="handleEditPost"></edit-post>
                                 </v-list-item>
                             </v-list>
                         </v-menu>
@@ -80,11 +83,14 @@
             </v-col>
         </v-row>
     </v-container>
+
 </template>
 
 <script>
 import { useAppStore } from '../store/app.js';
 import { Event } from '../utils/constant.js';
+import EditPost from './EditPost.vue';
+
 export default {
     props: {
         post: {
@@ -92,10 +98,14 @@ export default {
             required: true
         }
     },
+    components: {
+        EditPost
+    },
     emits: [Event.DELETE_POST],
     data() {
         return {
             user: undefined,
+            editModalOpen: false,
             items: []
         }
     },
@@ -109,7 +119,6 @@ export default {
         if (this.isOwner) {
             this.items.push({
                 title: 'Edit',
-                action: this.handleEditPost,
                 icon: 'mdi-pencil'
             });
             this.items.push({
@@ -139,8 +148,8 @@ export default {
         handleDeletePost() {
             this.$emit(Event.DELETE_POST, this.post);
         },
-        handleEditPost() {
-
+        handleEditPost(requestBody) {
+            this.$emit(Event.EDIT_POST, requestBody);
         }
     },
     setup() {
