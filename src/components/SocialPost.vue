@@ -9,7 +9,7 @@
             </v-col>
             <v-col cols="11">
                 <div class="d-flex">
-                    <div class="text-body-1 font-weight-light mr-1">{{ post.User.UserName }}</div>
+                    <div class="text-body-1 font-weight-light mr-1 text-deep-orange-darken-3">{{ post.User.UserName }}</div>
                     <v-tooltip
                       :text="formatLongDate(post.DateAdded)"
                       bottom
@@ -65,21 +65,53 @@
                 <div class="d-flex mt-1">
                     <div class="d-flex align-center mr-4">
                         <v-btn
+                          class="mr-1"
                           density="compact"
-                          icon="mdi-heart-outline"
+                          :icon="liked ? 'mdi-heart' : 'mdi-heart-outline'"
+                          :color="liked ? 'red' : undefined"
                           variant="plain"
+                          @click="liked ? handleDeleteFeedback() : handleCreateFeedback()"
                         ></v-btn>
-                        <span class="text-caption">69</span>
+                        <v-menu 
+                          v-if="post?.Feedbacks?.length"
+                          :contained="true"
+                          :open-on-hover="true"
+                        >
+                            <template v-slot:activator="{ props }">
+                                <span v-bind="props" class="text-caption">{{ this.post.Feedbacks.length }}</span>
+                            </template>
+                            <v-list>
+                                <v-list-item
+                                    v-for="feedback in post.Feedbacks"
+                                    :key="feedback.UserId"
+                                    :prepend-avatar="feedback.User.Avatar"
+                                    :title="feedback.UserName"
+                                ></v-list-item>
+                            </v-list>
+                        </v-menu>
+                        <span v-else class="text-caption">0</span>
+
+                        
                     </div>
                     <div class="d-flex align-center">
-                        <v-btn
-                          density="compact"
-                          icon="mdi-comment-outline"
-                          variant="plain"
-                        ></v-btn>
-                        <span class="text-caption">420</span>
+                        <create-comment :post="post" @create:comment="handleCreateComment"></create-comment>
+                        <span class="text-caption">{{ this.post.Comments?.length || 0}}</span>
                     </div>
                 </div>
+            </v-col>
+        </v-row>
+        <v-row style="margin-top: 0 !important;">
+            <v-col cols="1"></v-col>
+            <v-col cols="11">
+                <social-comment
+                  v-for="comment in post.Comments" 
+                  :key="comment.Id"
+                  :comment="comment"
+                  :post="post"
+                  class="mb-1"
+                  @delete:comment="handleDeleteComment"
+                  @edit:comment="handleEditComment"
+                ></social-comment>
             </v-col>
         </v-row>
     </v-container>
@@ -90,6 +122,9 @@
 import { useAppStore } from '../store/app.js';
 import { Event } from '../utils/constant.js';
 import EditPost from './EditPost.vue';
+import SocialComment from './SocialComment.vue';
+import CreateComment from './CreateComment.vue';
+import { formatShortDate, formatLongDate } from '../utils/function.js';
 
 export default {
     props: {
@@ -99,9 +134,11 @@ export default {
         }
     },
     components: {
-        EditPost
+        CreateComment,
+        EditPost,
+        SocialComment
     },
-    emits: [Event.DELETE_POST],
+    emits: [Event.DELETE_POST, Event.EDIT_POST, Event.CREATE_FEEDBACK, Event.DELETE_FEEDBACK, Event.CREATE_COMMENT, Event.DELETE_COMMENT, Event.EDIT_COMMENT],
     data() {
         return {
             user: undefined,
@@ -112,7 +149,10 @@ export default {
     computed: {
         isOwner() {
             return this.user?.id === this.post.User.Id;
-        }
+        },
+        liked() {
+            return this.post.Feedbacks && this.post.Feedbacks.length > 0 && !!this.post.Feedbacks.find(f => f.UserId === this.user?.id);
+        },
     },
     mounted() {
         this.user = this.appStore.getUser();
@@ -136,27 +176,35 @@ export default {
         }
     },
     methods: {
-        formatShortDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleString('en-US', { month: 'short', day: '2-digit' });
-        },
-        formatLongDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) + ' - ' + 
-                date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
-        },
         handleDeletePost() {
             this.$emit(Event.DELETE_POST, this.post);
         },
         handleEditPost(requestBody) {
             this.$emit(Event.EDIT_POST, requestBody);
+        },
+        handleCreateFeedback() {
+            this.$emit(Event.CREATE_FEEDBACK, this.post.Id);
+        },
+        handleDeleteFeedback() {
+            this.$emit(Event.DELETE_FEEDBACK, this.post.Id);
+        },
+        handleCreateComment(requestBody) {
+            this.$emit(Event.CREATE_COMMENT, requestBody);
+        },
+        handleDeleteComment(comment) {
+            this.$emit(Event.DELETE_COMMENT, comment);
+        },
+        handleEditComment(requestBody) {
+            this.$emit(Event.EDIT_COMMENT, requestBody);
         }
     },
     setup() {
         const appStore = useAppStore();
 
         return {
-            appStore
+            appStore,
+            formatShortDate,
+            formatLongDate
         }
     }
 }

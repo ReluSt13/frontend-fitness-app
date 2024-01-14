@@ -1,50 +1,43 @@
 <template>
-    <v-dialog
-      v-model="open"
-      width="600"
-    >
+    <v-dialog width="600">
         <template #activator="{ props }">
             <div class="d-flex align-center" style="gap: 8px" v-bind="props">
                 <v-icon>mdi-pencil</v-icon>
                 <v-list-item-title>Edit</v-list-item-title>
             </div>
         </template>
+
         <template #default="{ isActive }">
-            <post-modal
+            <comment-modal
+              :comment="comment"
               :post="post"
-              @edit:post="handleSubmit" 
+              :update="true" 
+              @edit:comment="handleSubmit" 
               @close:modal="isActive.value = false"
-            ></post-modal>
+            ></comment-modal>
         </template>
     </v-dialog>
 </template>
 
 <script>
-import PostModal from './PostModal.vue';
+import CommentModal from './CommentModal.vue';
 import { Event } from '../utils/constant.js';
 export default {
+    components: {
+        CommentModal
+    },
     props: {
         post: {
             type: Object
+        },
+        comment: {
+            type: Object
         }
     },
-    components: {
-        PostModal
-    },
-    emits: [Event.EDIT_POST],
-    data() {
-        return {
-            open: false
-        }
-    },
-    watch: {
-        isOpen(value) {
-            this.open = value;
-        }
-    },
+    emits: [Event.EDIT_COMMENT],
     methods: {
         handleSubmit(requestBody) {
-            this.$emit(Event.EDIT_POST, requestBody);
+            this.$emit(Event.EDIT_COMMENT, requestBody);
         }
     }
 }

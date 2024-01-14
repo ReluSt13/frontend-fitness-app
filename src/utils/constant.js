@@ -10,7 +10,12 @@ const Event = {
     CREATE_POST: 'create:post',
     DELETE_POST: 'delete:post',
     EDIT_POST: 'edit:post',
-    CLOSE_MODAL: 'close:modal'
+    CREATE_COMMENT: 'create:comment',
+    DELETE_COMMENT: 'delete:comment',
+    EDIT_COMMENT: 'edit:comment',
+    CLOSE_MODAL: 'close:modal',
+    CREATE_FEEDBACK: 'create:feedback',
+    DELETE_FEEDBACK: 'delete:feedback',
 }
 
 export {

@@ -67,7 +67,7 @@ export default {
             type: Object
         }
     },
-    emits: [Event.CLOSE_MODAL, Event.CREATE_POST],
+    emits: [Event.CLOSE_MODAL, Event.CREATE_POST, Event.EDIT_POST],
     data() {
         return {
             postContent: undefined,

@@ -108,5 +108,65 @@ export const useAppStore = defineStore('app', {
         });
       return response;
     },
+    createFeedback(payload) {
+      const response = axios.post('/createFeedback', payload)
+        .then((response) => {
+          const parsedResponse = {
+            isSuccess: response.data.isSuccess,
+            response: JSON.parse(response.data.response),
+            errors: response.data.error
+          }
+          return parsedResponse;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
+    },
+    deleteFeedback(id) {
+      const response = axios.delete('/deleteFeedback', { data: { postId: id } })
+        .then((response) => {
+          return response.data;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
+    },
+    createComment(payload) {
+      const response = axios.post('/createComment', payload)
+        .then((response) => {
+          const parsedResponse = {
+            isSuccess: response.data.isSuccess,
+            response: JSON.parse(response.data.response),
+            errors: response.data.error
+          }
+          return parsedResponse;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
+    },
+    deleteComment(id) {
+      const response = axios.delete('/deleteComment', { data: { commentId: id } })
+        .then((response) => {
+          return response.data;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
+    },
+    editComment(payload) {
+      const response = axios.put('/updateComment', payload)
+        .then((response) => {
+          return response.data;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
+    }
   }
 })
