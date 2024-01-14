@@ -27,10 +27,10 @@
           ></v-textarea>
       </div>
       <v-row>
-          <v-col cols="9">
+          <v-col cols="8">
               <v-img src="../assets/another-text-logo.png" height="30" width="120"></v-img>
           </v-col>
-          <v-col cols="3" class="d-flex justify-end">
+          <v-col cols="4" class="d-flex justify-end">
               <v-btn
                 color="deep-orange"
                 :disabled="!canSubmit"

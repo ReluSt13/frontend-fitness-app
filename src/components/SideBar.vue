@@ -1,16 +1,19 @@
 <template>
     <v-navigation-drawer
       theme="dark"
-      permanent
     >
         <v-divider></v-divider>
         <v-container class="d-flex flex-column align-center">
             <v-avatar :image="user?.avatar" icon="mdi-account" size="100" color="#999"></v-avatar>
-            <div class="text-body-1 mt-2">Welcome, <span class="text-deep-orange-darken-2">{{ user?.name }}</span> ({{ user?.roles }})</div>
+            <div class="text-body-1 mt-2">
+              Welcome, <span class="text-deep-orange-darken-2 mr-1">{{ user?.name }}</span>
+              <v-icon v-if="isVerified" size="x-small" color="deep-orange-darken-2">mdi-check-decagram</v-icon>
+            </div>
+            
         </v-container>
         <v-divider></v-divider>
 
-        <create-post @create:post="handleCreatePost"></create-post>
+        <create-post :verified="isVerified" @create:post="handleCreatePost"></create-post>
 
         <v-list color="transparent">
           <v-list-item prepend-icon="mdi-view-dashboard" title="Dashboard"></v-list-item>
@@ -20,6 +23,15 @@
 
         <template v-slot:append>
           <div class="pl-2 pr-2">
+            <v-btn
+              v-if="!isVerified"
+              class="mb-2"
+              block
+              color="light-blue-darken-2"
+              @click="handleGetVerified"
+            >
+              Get verified
+            </v-btn>
             <v-btn
               block
               variant="outlined"
@@ -49,6 +61,11 @@ export default {
             user: undefined
         }
     },
+    computed: {
+      isVerified() {
+        return this.user?.roles?.includes('Verified');
+      }
+    },
     mounted() {
         this.user = this.appStore.getUser();
     },
@@ -56,6 +73,18 @@ export default {
         handleLogout() {
             this.appStore.logout();
             this.$router.push({ name: 'Login' });
+        },
+        async handleGetVerified() {
+            const response = await this.appStore.verifyUser();
+            if (response.isSuccess) {
+              this.appStore.logout();
+              this.$router.push({ name: 'Login' });
+              this.appStore.snackbarInfo = {
+                message: 'You are now verified. Please log in again.',
+                color: 'success'
+              }
+              this.appStore.openSnackbar(true);
+            }
         },
         handleCreatePost(requestBody) {
             this.$emit(Event.CREATE_POST, requestBody);

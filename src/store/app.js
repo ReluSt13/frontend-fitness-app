@@ -167,6 +167,16 @@ export const useAppStore = defineStore('app', {
           return error.response.data;
         });
       return response;
+    },
+    verifyUser() {
+      const response = axios.get('/User/verify')
+        .then((response) => {
+          return response.data;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
     }
   }
 })

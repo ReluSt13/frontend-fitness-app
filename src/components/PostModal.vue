@@ -41,10 +41,10 @@
         </v-col>
     </v-row>
     <v-row>
-        <v-col cols="10">
+        <v-col cols="8">
             <v-img src="../assets/another-text-logo.png" height="30" width="120"></v-img>
         </v-col>
-        <v-col cols="2">
+        <v-col cols="4" class="d-flex justify-end">
             <v-btn
               color="deep-orange"
               :disabled="!canSubmit"
