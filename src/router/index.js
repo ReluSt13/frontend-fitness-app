@@ -4,6 +4,7 @@ import Home from "../views/HomeView.vue";
 import Login from "../views/LoginView.vue";
 import Register from "../views/RegisterView.vue";
 import WorkoutsView from "../views/WorkoutsView.vue";
+import LeaderboardView from "../views/LeaderboardView.vue";
 
 const routes = [
   {
@@ -31,6 +32,19 @@ const routes = [
         next();
       }
     },
+  },
+  {
+    name: "Leaderboard",
+    path: "/leaderboard",
+    component: LeaderboardView,
+    beforeEnter: (to, from, next) => {
+      const appStore = useAppStore();
+      if (!appStore.isLoggedIn()) {
+        next({ name: "Login" });
+      } else {
+        next();
+      }
+    }
   },
   {
     name: "Login",

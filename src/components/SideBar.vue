@@ -39,9 +39,18 @@
       @create:post="handleCreatePost"
     ></create-post>
 
-    <div class="pa-2">
+    <div class="d-flex flex-column pa-2" style="gap: 8px">
+      <v-btn 
+        v-if="!isDrawerExpanded" 
+        to="/" 
+        class="rounded-pill"
+        color="deep-orange-darken-4"
+        block
+      >
+        Home
+      </v-btn>
       <v-btn
-        v-if="isOnHomeRoute && !isDrawerExpanded" 
+        v-if="!isDrawerExpanded" 
         to="/workouts" 
         class="rounded-pill"
         color="deep-orange-darken-4"
@@ -49,15 +58,14 @@
       >
         Workouts
       </v-btn>
-  
-      <v-btn 
-        v-if="!isOnHomeRoute && !isDrawerExpanded" 
-        to="/" 
+      <v-btn
+        v-if="!isDrawerExpanded" 
+        to="/leaderboard" 
         class="rounded-pill"
         color="deep-orange-darken-4"
         block
       >
-        Home
+        Leaderboard
       </v-btn>
     </div>
 
@@ -128,6 +136,9 @@ export default {
     },
     isOnHomeRoute() {
       return this.$route.name === "Home";
+    },
+    isOnLeaderboardRoute() {
+      return this.$route.name === "Leaderboard";
     },
   },
   mounted() {
