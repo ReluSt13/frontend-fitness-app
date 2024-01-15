@@ -26,6 +26,7 @@
         <div class="text-body-1 mt-2">
           Welcome, <span class="text-deep-orange-darken-2 mr-1">{{ user?.name }}</span>
           <v-icon v-if="isVerified" size="x-small" color="deep-orange-darken-2">mdi-check-decagram</v-icon>
+          <v-icon v-if="isAdmin" size="x-small" color="deep-orange-darken-2">mdi-shield-crown</v-icon>
         </div>
           
       </v-container>
@@ -106,6 +107,9 @@ export default {
   computed: {
       isVerified() {
         return this.user?.roles?.includes('Verified');
+      },
+      isAdmin() {
+        return this.user?.roles?.includes('Admin');
       },
       isOnHomeRoute() {
         return this.$route.name === "Home";
