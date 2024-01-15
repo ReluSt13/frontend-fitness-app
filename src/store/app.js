@@ -7,7 +7,8 @@ export const useAppStore = defineStore("app", {
   state: () => ({
     snackbar: false,
     snackbarInfo: {},
-    newWorkout: undefined
+    newWorkout: undefined,
+    isMobile: false
   }),
   actions: {
     openSnackbar(value) {

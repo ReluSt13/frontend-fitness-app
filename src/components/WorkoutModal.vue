@@ -11,14 +11,23 @@
           </v-col>
           <v-col class="d-flex align-center justify-center" cols="8">
             <v-icon>mdi-arm-flex</v-icon>
-            <div class="text-h4 ml-2">{{ workout.Name }}</div>
+            <div
+              class="ml-2"
+              :class="{'text-h4': !appStore.isMobile, 'text-body-1': appStore.isMobile}"
+            >
+                {{ workout.Name }}
+            </div>
             <v-tooltip
                 :text="formatLongDate(workout.DateCreated)"
                 bottom
                 contained
             >
                 <template v-slot:activator="{ props }">
-                    <div v-bind="props" class="text-body-1 ml-2 text-grey-darken-2">• {{ formatShortDate(workout.DateCreated) }}</div>
+                    <div 
+                      v-bind="props" 
+                      class="ml-2 text-grey-darken-2"
+                      :class="{'text-body-1': !appStore.isMobile, 'text-caption': appStore.isMobile}"
+                    >• {{ formatShortDate(workout.DateCreated) }}</div>
                 </template>
             </v-tooltip>
             
