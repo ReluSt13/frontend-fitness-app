@@ -29,10 +29,7 @@
             type="number"
             class="sets-select"
             required
-            :rules="[
-              (v) => !!v || 'Required',
-              (v) => v > 0 || 'Bro at least 1',
-            ]"
+            :rules="[(v) => !!v || '*', (v) => v > 0 || 'Bro at least 1']"
           ></v-text-field>
         </v-col>
 
@@ -44,7 +41,7 @@
             type="number"
             class="reps-select"
             required
-            :rules="[(v) => !!v || 'Required', (v) => v > 0 || 'Do some reps']"
+            :rules="[(v) => !!v || '*', (v) => v > 0 || 'Do some reps']"
           ></v-text-field>
         </v-col>
 
@@ -56,10 +53,7 @@
             type="number"
             class="weight-select"
             required
-            :rules="[
-              (v) => !!v || 'Required',
-              (v) => v > 0 || 'Use some weight',
-            ]"
+            :rules="[(v) => !!v || '*', (v) => v > 0 || 'Use some weight']"
           ></v-text-field>
         </v-col>
         <v-col>
@@ -189,8 +183,9 @@ export default {
 .weight-select {
   min-width: 150px;
 }
-.reps-select {
-  min-width: 100px;
+.reps-select,
+.sets-select {
+  min-width: 90px;
 }
 
 .p-10 {
