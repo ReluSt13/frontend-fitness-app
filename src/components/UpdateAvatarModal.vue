@@ -50,7 +50,7 @@
             newAvatar: undefined,
             avatarRule: [
                 (value) => {
-                    const pattern = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g;
+                    const pattern = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/i;
                     if (!pattern.test(value)) {
                         return 'Invalid URL. Please enter a URL that points to an image.';
                     } else {

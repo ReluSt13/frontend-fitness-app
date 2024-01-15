@@ -3,9 +3,9 @@
     <v-form v-model="formStatus" @submit.prevent="submitWorkoutForm">
       <v-text-field
         v-model="workoutName"
+        :rules="workoutNameRule"
         label="Workout Name"
         required
-        :rules="[(v) => !!v || 'Workout name is required']"
       ></v-text-field>
 
       <!-- Exercise List -->
@@ -29,7 +29,7 @@
             type="number"
             class="sets-select"
             required
-            :rules="[(v) => !!v || '*', (v) => v > 0 || 'Bro at least 1']"
+            :rules="[(v) => !!v || 'Required', (v) => v > 0 || 'Bro at least 1']"
           ></v-text-field>
         </v-col>
 
@@ -41,7 +41,7 @@
             type="number"
             class="reps-select"
             required
-            :rules="[(v) => !!v || '*', (v) => v > 0 || 'Do some reps']"
+            :rules="[(v) => !!v || 'Required', (v) => v > 0 || 'Do some reps']"
           ></v-text-field>
         </v-col>
 
@@ -53,7 +53,7 @@
             type="number"
             class="weight-select"
             required
-            :rules="[(v) => !!v || '*', (v) => v > 0 || 'Use some weight']"
+            :rules="[(v) => !!v || 'Required', (v) => v > 0 || 'Use some weight']"
           ></v-text-field>
         </v-col>
         <v-col>
@@ -109,6 +109,7 @@ export default {
       exercises: [{ name: "", reps: "", weight: "" }],
       exerciseNames: [],
       exerciseNamesMap: {},
+      workoutNameRule: [(v) => !!v || "Workout name is required", (v) => v.length <= 20 || "Workout name must be less than 20 characters"]
     };
   },
   async created() {

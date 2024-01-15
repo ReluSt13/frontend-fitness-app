@@ -1,5 +1,5 @@
 <template>
-    <v-container class="bg-grey-darken-4 rounded-lg">
+    <v-container class="bg-grey-darken-4 rounded-lg" style="overflow-y: scroll;">
       <v-row>
           <v-col cols="1">
               <v-btn
@@ -18,6 +18,7 @@
           <v-avatar :image="user.avatar" icon="mdi-account" size="50" color="#999"></v-avatar>
           <v-textarea
               v-model="commentContent"
+              :rules="textAreaRules"
               variant="filled"
               auto-grow
               placeholder="Leave a comment :)"
@@ -65,7 +66,23 @@
           return {
               commentContent: undefined,
               postId: undefined,
-              btnText: 'Comment'
+              btnText: 'Comment',
+              textAreaRules: [
+                (value) => {
+                    if (!value) {
+                        return 'Please enter some content.';
+                    } else {
+                        return true;
+                    }
+                },
+                (value) => {
+                    if (value && value.length > 1024) {
+                        return 'Content must be less than 1024 characters.';
+                    } else {
+                        return true;
+                    }
+                }
+            ]
           }
       },
       mounted() {
@@ -77,7 +94,7 @@
       },
       computed: {
           canSubmit() {
-              return this.commentContent && this.commentContent.length > 0;
+              return this.commentContent && this.commentContent.length > 0 && this.textAreaRules[0](this.commentContent) === true && this.textAreaRules[1](this.commentContent) === true;
           }
       },
       methods: {

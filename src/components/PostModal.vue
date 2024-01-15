@@ -1,5 +1,5 @@
 <template>
-  <v-container class="bg-grey-darken-4 rounded-lg">
+  <v-container class="bg-grey-darken-4 rounded-lg" style="overflow-y: scroll;">
     <v-row>
         <v-col cols="1">
             <v-btn
@@ -18,6 +18,7 @@
         <v-avatar :image="user.avatar" icon="mdi-account" size="50" color="#999"></v-avatar>
         <v-textarea
             v-model="postContent"
+            :rules="textAreaRules"
             variant="filled"
             auto-grow
             placeholder="What's on your mind?"
@@ -76,9 +77,25 @@ export default {
             btnText: 'Post',
             imageRule: [
                 (value) => {
-                    const pattern = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g;
+                    const pattern = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/i;
                     if (!pattern.test(value)) {
                         return 'Invalid URL. Please enter a URL that points to an image.';
+                    } else {
+                        return true;
+                    }
+                }
+            ],
+            textAreaRules: [
+                (value) => {
+                    if (!value) {
+                        return 'Please enter some content.';
+                    } else {
+                        return true;
+                    }
+                },
+                (value) => {
+                    if (value && value.length > 1024) {
+                        return 'Content must be less than 1024 characters.';
                     } else {
                         return true;
                     }
@@ -96,7 +113,7 @@ export default {
     },
     computed: {
         canSubmit() {
-            return this.postContent && this.postContent.length > 0 && (!this.postImage || this.imageRule[0](this.postImage) === true);
+            return this.postContent && this.postContent.length > 0 && (!this.postImage || this.imageRule[0](this.postImage) === true) && this.textAreaRules[0](this.postContent) === true && this.textAreaRules[1](this.postContent) === true;
         }
     },
     methods: {
