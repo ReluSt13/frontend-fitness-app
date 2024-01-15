@@ -215,6 +215,16 @@ export default {
       return streak;
     },
   },
+  watch: {
+    "appStore.newWorkout": {
+      handler(newWorkout) {
+        if (newWorkout !== undefined) {
+          this.workouts.unshift(newWorkout);
+        }
+      },
+      deep: true,
+    },
+  },
   setup() {
     const appStore = useAppStore();
 
