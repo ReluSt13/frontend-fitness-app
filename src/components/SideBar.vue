@@ -40,9 +40,9 @@
     ></create-post>
 
     <div class="d-flex flex-column pa-2" style="gap: 8px">
-      <v-btn 
-        v-if="!isDrawerExpanded" 
-        to="/" 
+      <v-btn
+        v-if="!isDrawerExpanded"
+        to="/"
         class="rounded-pill"
         color="deep-orange-darken-4"
         block
@@ -50,8 +50,8 @@
         Home
       </v-btn>
       <v-btn
-        v-if="!isDrawerExpanded" 
-        to="/workouts" 
+        v-if="!isDrawerExpanded"
+        to="/workouts"
         class="rounded-pill"
         color="deep-orange-darken-4"
         block
@@ -59,8 +59,8 @@
         Workouts
       </v-btn>
       <v-btn
-        v-if="!isDrawerExpanded" 
-        to="/leaderboard" 
+        v-if="!isDrawerExpanded"
+        to="/leaderboard"
         class="rounded-pill"
         color="deep-orange-darken-4"
         block
@@ -79,7 +79,7 @@
       block
       class="rounded-pill"
       color="deep-orange-darken-4"
-      variant="text"
+      variant="outlined"
       @click.stop="toggleExpandDrawer"
     >
       New workout

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <SideBar @create:post="handleCreatePost"></SideBar>
+    <SideBar></SideBar>
     <v-main class="d-flex flex-column align-center justify-center">
       <h1>Workouts here</h1>
     </v-main>
@@ -16,11 +16,11 @@ export default {
     SideBar,
   },
   setup() {
-      const appStore = useAppStore();
+    const appStore = useAppStore();
 
-      return {
-        appStore
-      }
-    }
+    return {
+      appStore,
+    };
+  },
 };
 </script>
