@@ -84,6 +84,8 @@
       @cancelWorkout="toggleExpandDrawer"
     ></create-workout>
 
+    <div>{{ computeStreak() }}</div>
+
     <template v-slot:append>
       <div class="pl-2 pr-2">
         <v-btn
@@ -139,7 +141,7 @@ export default {
     },
     isOnLeaderboardRoute() {
       return this.$route.name === "Leaderboard";
-    }
+    },
   },
   async mounted() {
     this.user = this.appStore.getUser();
@@ -186,8 +188,25 @@ export default {
       }
     },
     computeStreak() {
-      return 0;
-    }
+      const dates = [];
+      console.log(this.workouts);
+      this.workouts.forEach((workout) => {
+        var date = new Date(workout.DateCreated).getDate();
+        dates.push(date);
+      });
+
+      console.log(dates);
+      var streak = 1;
+
+      for (var i = 1; i < dates.length; i++) {
+        console.log(dates[i], streak);
+        if (dates[i] === dates[i - 1]) continue;
+        if (dates[i] === dates[i - 1] - 1) streak++;
+        else break;
+      }
+
+      return streak;
+    },
   },
   setup() {
     const appStore = useAppStore();
