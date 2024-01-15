@@ -220,6 +220,7 @@ export default {
       handler(newWorkout) {
         if (newWorkout !== undefined) {
           this.workouts.unshift(newWorkout);
+          this.computeStreak();
         }
       },
       deep: true,
