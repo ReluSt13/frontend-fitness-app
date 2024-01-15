@@ -26,7 +26,7 @@
                         </template>
                     </v-tooltip>
                     <div class="d-flex flex-grow-1 justify-end">
-                        <v-menu :close-on-content-click="false">
+                        <v-menu :close-on-content-click="true">
                             <template v-slot:activator="{ props }">
                                 <v-btn
                                   v-bind="props"

@@ -66,6 +66,14 @@ export const useAppStore = defineStore('app', {
             response: JSON.parse(response.data.response),
             errors: response.data.error
           }
+          parsedResponse.response.forEach(post => {
+            if (post.Comments === null) {
+              post.Comments = [];
+            }
+            if (post.Feedbacks === null) {
+              post.Feedbacks = [];
+            }
+          });
           return parsedResponse;
         })
         .catch((error) => {
@@ -81,6 +89,13 @@ export const useAppStore = defineStore('app', {
             response: JSON.parse(response.data.response),
             errors: response.data.error
           }
+          if (parsedResponse.response.Comments === null) {
+            parsedResponse.response.Comments = [];
+          }
+          if (parsedResponse.response.Feedbacks === null) {
+            parsedResponse.response.Feedbacks = [];
+          }
+
           return parsedResponse;
         })
         .catch((error) => {

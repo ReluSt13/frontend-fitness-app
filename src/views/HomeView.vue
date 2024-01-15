@@ -4,7 +4,7 @@
     <v-main class="d-flex flex-column align-center justify-center">
       <SocialPost
         v-for="post in posts"
-        :key="post.id"
+        :key="post.Id"
         :post="post"
         style="max-width: 600px;"
         @delete:post="handleDeletePost"

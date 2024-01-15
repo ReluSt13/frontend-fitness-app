@@ -26,7 +26,7 @@
                         </template>
                     </v-tooltip>
                     <div class="d-flex flex-grow-1 justify-end">
-                        <v-menu :close-on-content-click="false">
+                        <v-menu :close-on-content-click="true">
                             <template v-slot:activator="{ props }">
                                 <v-btn
                                   v-bind="props"
@@ -152,7 +152,7 @@ export default {
     },
     computed: {
         isOwner() {
-            return this.user?.id === this.post.User.Id;
+            return this.user.id === this.post.UserId;
         },
         isAdmin() {
             return this.user?.roles?.includes('Admin');
