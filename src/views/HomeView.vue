@@ -1,7 +1,10 @@
 <template>
   <v-app>
     <SideBar @create:post="handleCreatePost"></SideBar>
-    <v-main class="d-flex flex-column align-center justify-center">
+    <v-main
+      v-if="posts.length > 0"
+      class="d-flex flex-column align-center justify-center"
+    >
       <SocialPost
         v-for="post in posts"
         :key="post.Id"
@@ -16,6 +19,11 @@
         @edit:comment="handleEditComment"
       ></SocialPost>
     </v-main>
+    <v-main
+      v-else
+      class="text-h5 d-flex flex-column align-center justify-center"
+      >No posts yet</v-main
+    >
   </v-app>
 </template>
 
@@ -38,8 +46,10 @@ export default {
   async created() {
     this.user = this.appStore.getUser();
     const postsResult = await this.appStore.getPosts();
+    console.log(postsResult);
     if (postsResult.isSuccess) {
       this.posts = postsResult.response;
+      console.log(postsResult.response);
     }
   },
   methods: {
