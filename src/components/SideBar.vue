@@ -39,7 +39,7 @@
       @create:post="handleCreatePost"
     ></create-post>
 
-    <div class="d-flex flex-column pa-2" style="gap: 8px">
+    <div class="d-flex flex-column pa-2" style="gap: 16px">
       <v-btn
         v-if="!isDrawerExpanded"
         to="/"
@@ -67,23 +67,22 @@
       >
         Leaderboard
       </v-btn>
+      <v-btn
+        v-if="!isDrawerExpanded"
+        block
+        class="rounded-pill"
+        color="deep-orange-darken-4"
+        variant="outlined"
+        @click.stop="toggleExpandDrawer"
+      >
+        New workout
+      </v-btn>
     </div>
 
     <create-workout
       v-if="isDrawerExpanded"
       @cancelWorkout="toggleExpandDrawer"
     ></create-workout>
-
-    <v-btn
-      v-if="!isDrawerExpanded"
-      block
-      class="rounded-pill"
-      color="deep-orange-darken-4"
-      variant="outlined"
-      @click.stop="toggleExpandDrawer"
-    >
-      New workout
-    </v-btn>
 
     <template v-slot:append>
       <div class="pl-2 pr-2">

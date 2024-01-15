@@ -126,6 +126,7 @@ export default {
         });
 
         if (result.isSuccess) {
+          this.appStore.newWorkout = result.response;
           const workoutId = result.response.Id;
 
           console.log("Exercise Names Map: ", this.exerciseNamesMap);

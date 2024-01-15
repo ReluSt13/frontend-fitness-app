@@ -7,6 +7,7 @@ export const useAppStore = defineStore("app", {
   state: () => ({
     snackbar: false,
     snackbarInfo: {},
+    newWorkout: undefined
   }),
   actions: {
     openSnackbar(value) {
@@ -254,5 +255,21 @@ export const useAppStore = defineStore("app", {
         });
       return response;
     },
+    getAllUserWorkouts() {
+      const response = axios
+        .get("/getAllWorkouts")
+        .then((response) => {
+          const parsedResponse = {
+            isSuccess: response.data.isSuccess,
+            response: JSON.parse(response.data.response),
+            errors: response.data.error,
+          };
+          return parsedResponse;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
+    }
   },
 });
