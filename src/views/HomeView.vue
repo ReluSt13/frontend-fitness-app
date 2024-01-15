@@ -46,10 +46,8 @@ export default {
   async created() {
     this.user = this.appStore.getUser();
     const postsResult = await this.appStore.getPosts();
-    console.log(postsResult);
     if (postsResult.isSuccess) {
       this.posts = postsResult.response;
-      console.log(postsResult.response);
     }
   },
   methods: {
