@@ -16,7 +16,8 @@ const Event = {
     CLOSE_MODAL: 'close:modal',
     CREATE_FEEDBACK: 'create:feedback',
     DELETE_FEEDBACK: 'delete:feedback',
-    UPDATE_AVATAR: 'update:avatar'
+    UPDATE_AVATAR: 'update:avatar',
+    UPDATE_WORKOUT: 'update:workout'
 }
 
 export {

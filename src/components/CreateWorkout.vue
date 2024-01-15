@@ -157,9 +157,7 @@ export default {
               weight: exercise.weight,
               sets: exercise.sets,
             };
-            const exerciseResult = await this.appStore.createWorkoutExercise(
-              payload
-            );
+            await this.appStore.createWorkoutExercise(payload);
           }
         }
 

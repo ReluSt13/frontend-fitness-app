@@ -270,6 +270,33 @@ export const useAppStore = defineStore("app", {
           return error.response.data;
         });
       return response;
+    },
+    deleteWorkout(id) {
+      const response = axios
+        .delete("/deleteWorkout", { data: { workoutId: id } })
+        .then((response) => {
+          return response.data;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
+    },
+    getAllWorkoutExercises(workoutId) {
+      const response = axios
+        .get(`/getAllWorkoutExercises?workoutId=${workoutId}`)
+        .then((response) => {
+          const parsedResponse = {
+            isSuccess: response.data.isSuccess,
+            response: JSON.parse(response.data.response),
+            errors: response.data.error,
+          };
+          return parsedResponse;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
     }
   },
 });
