@@ -7,6 +7,7 @@
                   block
                   class="rounded-pill"
                   color="deep-orange-darken-4"
+                  :disabled="!isOnHomeRoute"
                 >
                   Post
                 </v-btn>
@@ -43,6 +44,11 @@ export default {
         PostModal
     },
     emits: [Event.CREATE_POST],
+    computed: {
+        isOnHomeRoute() {
+            return this.$route.name === "Home";
+        },
+    },
     methods: {
         handleSubmit(requestBody) {
             this.$emit(Event.CREATE_POST, requestBody);
