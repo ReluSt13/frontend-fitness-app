@@ -39,13 +39,27 @@
       @create:post="handleCreatePost"
     ></create-post>
 
-    <router-link v-if="isOnHomeRoute && !isDrawerExpanded" to="/workouts">
-      <v-btn block variant="text">Workouts</v-btn>
-    </router-link>
-
-    <router-link v-if="!isOnHomeRoute && !isDrawerExpanded" to="/">
-      <v-btn block variant="text">Home</v-btn>
-    </router-link>
+    <div class="pa-2">
+      <v-btn
+        v-if="isOnHomeRoute && !isDrawerExpanded" 
+        to="/workouts" 
+        class="rounded-pill"
+        color="deep-orange-darken-4"
+        block
+      >
+        Workouts
+      </v-btn>
+  
+      <v-btn 
+        v-if="!isOnHomeRoute && !isDrawerExpanded" 
+        to="/" 
+        class="rounded-pill"
+        color="deep-orange-darken-4"
+        block
+      >
+        Home
+      </v-btn>
+    </div>
 
     <create-workout
       v-if="isDrawerExpanded"
