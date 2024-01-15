@@ -80,7 +80,7 @@
       <div v-if="!isDrawerExpanded">
         <v-icon color="red">mdi-fire</v-icon>
         <span class="text-body-1 font-weight-light text-orange-darken-4"
-          >Workout Streak: {{ computeStreak() }}</span
+          >Workout Streak: {{ computedStreak }}</span
         >
       </div>
     </div>
@@ -146,6 +146,29 @@ export default {
     isOnLeaderboardRoute() {
       return this.$route.name === "Leaderboard";
     },
+    computedStreak() {
+      const dates = [];
+      this.workouts.forEach((workout) => {
+        var date = new Date(workout.DateCreated).getDate();
+        dates.push(date);
+      });
+
+      if (dates.length === 0) return 0;
+      if (
+        dates[0] !== new Date().getDate() ||
+        dates[0] !== new Date().getDate()
+      )
+        return 0;
+      var streak = 1;
+
+      for (var i = 1; i < dates.length; i++) {
+        if (dates[i] === dates[i - 1]) continue;
+        if (dates[i] === dates[i - 1] - 1) streak++;
+        else break;
+      }
+
+      return streak;
+    }
   },
   async mounted() {
     this.user = this.appStore.getUser();
@@ -190,37 +213,13 @@ export default {
         };
         this.appStore.openSnackbar(true);
       }
-    },
-    computeStreak() {
-      const dates = [];
-      this.workouts.forEach((workout) => {
-        var date = new Date(workout.DateCreated).getDate();
-        dates.push(date);
-      });
-
-      if (dates.length === 0) return 0;
-      if (
-        dates[0] !== new Date().getDate() ||
-        dates[0] !== new Date().getDate()
-      )
-        return 0;
-      var streak = 1;
-
-      for (var i = 1; i < dates.length; i++) {
-        if (dates[i] === dates[i - 1]) continue;
-        if (dates[i] === dates[i - 1] - 1) streak++;
-        else break;
-      }
-
-      return streak;
-    },
+    }
   },
   watch: {
     "appStore.newWorkout": {
       handler(newWorkout) {
         if (newWorkout !== undefined) {
           this.workouts.unshift(newWorkout);
-          this.computeStreak();
         }
       },
       deep: true,
