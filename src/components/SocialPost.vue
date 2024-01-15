@@ -4,7 +4,7 @@
       <v-col cols="1"></v-col>
       <v-col cols="10"
         ><v-row>
-          <v-col class="d-flex justify-center" cols="2">
+          <v-col class="d-flex justify-center" cols="1">
             <v-avatar
               :image="post.User.Avatar"
               icon="mdi-account"
@@ -12,7 +12,7 @@
               color="#999"
             ></v-avatar>
           </v-col>
-          <v-col cols="10">
+          <v-col class="pl-5" cols="11">
             <div class="d-flex">
               <div
                 class="text-body-1 font-weight-light mr-1 text-deep-orange-darken-3"
@@ -72,7 +72,10 @@
               </div>
             </div>
 
-            <div class="text-body-2 font-weight-light mb-1">
+            <div
+              class="text-body-2 font-weight-light mb-1"
+              style="word-break: break-all"
+            >
               {{ post.Content }}
             </div>
           </v-col>

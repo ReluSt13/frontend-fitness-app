@@ -76,11 +76,13 @@
             </v-menu>
           </div>
         </div>
-        <div class="text-body-2 font-weight-light mb-1">
+        <div
+          class="text-body-2 font-weight-light mb-1"
+          style="word-break: break-all"
+        >
           {{ comment.Content }}
         </div>
       </v-col>
-      <v-col cols="1"></v-col>
     </v-row>
   </v-container>
 </template>
