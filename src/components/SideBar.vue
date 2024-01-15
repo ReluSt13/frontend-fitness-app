@@ -124,6 +124,7 @@ export default {
       user: undefined,
       drawerWidth: 300,
       isDrawerExpanded: false,
+      workouts: [],
     };
   },
   computed: {
@@ -138,10 +139,14 @@ export default {
     },
     isOnLeaderboardRoute() {
       return this.$route.name === "Leaderboard";
-    },
+    }
   },
-  mounted() {
+  async mounted() {
     this.user = this.appStore.getUser();
+    const result = await this.appStore.getAllUserWorkouts();
+    if (result.isSuccess) {
+      this.workouts = result.response;
+    }
   },
   methods: {
     handleLogout() {
@@ -180,6 +185,9 @@ export default {
         this.appStore.openSnackbar(true);
       }
     },
+    computeStreak() {
+      return 0;
+    }
   },
   setup() {
     const appStore = useAppStore();

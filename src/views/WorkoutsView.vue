@@ -55,7 +55,7 @@
                 >
                   <template #content="slotProps">
                     <template v-if="slotProps.exercises.length > 0">
-                      <v-card-text>
+                      <v-card-text :class="{'pa-0 ma-0': appStore.isMobile}">
                         <v-list>
                             <v-list-item
                               v-for="exercise in slotProps.exercises"
@@ -76,11 +76,11 @@
               </template>
             </v-dialog>
             
-            <v-btn
+            <!-- <v-btn
               variant="outlined"
             >
               Edit
-            </v-btn>
+            </v-btn> -->
           </v-card-actions>
       </v-card>
       </div>
