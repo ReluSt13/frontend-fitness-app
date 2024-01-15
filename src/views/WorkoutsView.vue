@@ -9,10 +9,18 @@
 
 <script>
 import SideBar from "@/components/SideBar.vue";
+import { useAppStore } from "@/store/app";
 
 export default {
   components: {
     SideBar,
   },
+  setup() {
+      const appStore = useAppStore();
+
+      return {
+        appStore
+      }
+    }
 };
 </script>

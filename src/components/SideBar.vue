@@ -1,22 +1,27 @@
 <template>
-    <v-navigation-drawer
-      theme="dark"
-      :width="drawerWidth"
-    >
-      <v-divider></v-divider>
-      <v-container class="d-flex flex-column align-center">
-          <v-avatar :image="user?.avatar" icon="mdi-account" size="100" color="#999"></v-avatar>
-          <div class="text-body-1 mt-2">
-            Welcome, <span class="text-deep-orange-darken-2 mr-1">{{ user?.name }}</span>
-            <v-icon v-if="isVerified" size="x-small" color="deep-orange-darken-2">mdi-check-decagram</v-icon>
-          </div>
-          
-      </v-container>
-      <v-divider></v-divider>
+  <v-navigation-drawer theme="dark" :width="drawerWidth">
+    <v-divider></v-divider>
+    <v-container class="d-flex flex-column align-center">
+      <v-avatar
+        :image="user?.avatar"
+        icon="mdi-account"
+        size="100"
+        color="#999"
+      ></v-avatar>
+      <div class="text-body-1 mt-2">
+        Welcome,
+        <span class="text-deep-orange-darken-2 mr-1">{{ user?.name }}</span>
+        <v-icon v-if="isVerified" size="x-small" color="deep-orange-darken-2"
+          >mdi-check-decagram</v-icon
+        >
+      </div>
+    </v-container>
+    <v-divider></v-divider>
 
     <create-post
       v-if="!isDrawerExpanded"
-      :verified="isVerified" @create:post="handleCreatePost"
+      :verified="isVerified"
+      @create:post="handleCreatePost"
     ></create-post>
 
     <router-link v-if="isOnHomeRoute && !isDrawerExpanded" to="/workouts">
@@ -29,7 +34,6 @@
 
     <create-workout
       v-if="isDrawerExpanded"
-      @workout-submitted="handleWorkoutSubmitted"
       @cancelWorkout="toggleExpandDrawer"
     ></create-workout>
 
@@ -46,15 +50,15 @@
 
     <template v-slot:append>
       <div class="pl-2 pr-2">
-            <v-btn
-              v-if="!isVerified"
-              class="mb-2"
-              block
-              color="light-blue-darken-2"
-              @click="handleGetVerified"
-            >
-              Get verified
-            </v-btn>
+        <v-btn
+          v-if="!isVerified"
+          class="mb-2"
+          block
+          color="light-blue-darken-2"
+          @click="handleGetVerified"
+        >
+          Get verified
+        </v-btn>
         <v-btn block variant="outlined" @click="handleLogout"> Logout </v-btn>
       </div>
       <div class="d-flex justify-center mt-2">
@@ -82,15 +86,15 @@ export default {
       user: undefined,
       drawerWidth: 300,
       isDrawerExpanded: false,
-    }
+    };
   },
   computed: {
-      isVerified() {
-        return this.user?.roles?.includes('Verified');
-      },
-      isOnHomeRoute() {
-        return this.$route.name === "Home";
-      }
+    isVerified() {
+      return this.user?.roles?.includes("Verified");
+    },
+    isOnHomeRoute() {
+      return this.$route.name === "Home";
+    },
   },
   mounted() {
     this.user = this.appStore.getUser();
@@ -101,16 +105,16 @@ export default {
       this.$router.push({ name: "Login" });
     },
     async handleGetVerified() {
-        const response = await this.appStore.verifyUser();
-        if (response.isSuccess) {
-          this.appStore.logout();
-          this.$router.push({ name: 'Login' });
-          this.appStore.snackbarInfo = {
-            message: 'You are now verified. Please log in again.',
-            color: 'success'
-          }
-          this.appStore.openSnackbar(true);
-        }
+      const response = await this.appStore.verifyUser();
+      if (response.isSuccess) {
+        this.appStore.logout();
+        this.$router.push({ name: "Login" });
+        this.appStore.snackbarInfo = {
+          message: "You are now verified. Please log in again.",
+          color: "success",
+        };
+        this.appStore.openSnackbar(true);
+      }
     },
     handleCreatePost(requestBody) {
       this.$emit(Event.CREATE_POST, requestBody);
@@ -127,6 +131,6 @@ export default {
     return {
       appStore,
     };
-  }
+  },
 };
 </script>

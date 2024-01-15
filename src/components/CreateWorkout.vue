@@ -9,7 +9,7 @@
       ></v-text-field>
 
       <!-- Exercise List -->
-      <v-row v-for="(exercise, index) in exercises" :key="index">
+      <v-row v-for="exercise in exercises" :key="exercise.id">
         <v-col>
           <!-- Dropdown for Exercise Names -->
           <v-select
@@ -81,14 +81,31 @@
 </template>
 
 <script>
+import { useAppStore } from "@/store/app";
+
 export default {
+  props: {
+    workout: {
+      type: Object,
+    },
+  },
   data() {
     return {
       formStatus: undefined,
       workoutName: "",
       exercises: [{ name: "", reps: "", weight: "" }],
-      exerciseNames: ["Exercise 1", "Exercise 2", "Exercise 3"], // Replace with your actual exercise names
+      exerciseNames: [],
     };
+  },
+  async created() {
+    this.user = this.appStore.getUser();
+    const exerciseNamesResult = await this.appStore.getAllExercises();
+    if (exerciseNamesResult.isSuccess) {
+      exerciseNamesResult.response.forEach((element) => {
+        this.exerciseNames.push(element.Name);
+      });
+      console.log(this.exerciseNames);
+    }
   },
   methods: {
     addExercise() {
@@ -113,6 +130,13 @@ export default {
       this.exercises = [];
       this.$emit("cancelWorkout");
     },
+  },
+  setup() {
+    const appStore = useAppStore();
+
+    return {
+      appStore,
+    };
   },
 };
 </script>

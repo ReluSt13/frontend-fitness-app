@@ -1,19 +1,20 @@
 // Utilities
-import { defineStore } from 'pinia'
-import axios from '../utils/axios.js';
-import { handleSuccessAuthentication } from '../utils/function.js';
+import { defineStore } from "pinia";
+import axios from "../utils/axios.js";
+import { handleSuccessAuthentication } from "../utils/function.js";
 
-export const useAppStore = defineStore('app', {
+export const useAppStore = defineStore("app", {
   state: () => ({
     snackbar: false,
-    snackbarInfo: {}
+    snackbarInfo: {},
   }),
   actions: {
     openSnackbar(value) {
       this.snackbar = value;
     },
     async login(payload) {
-      const result = await axios.post('/User/login', payload)
+      const result = await axios
+        .post("/User/login", payload)
         .then((response) => handleSuccessAuthentication(response.data))
         .catch((error) => {
           return error.response.data;
@@ -21,10 +22,11 @@ export const useAppStore = defineStore('app', {
       return result;
     },
     logout() {
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
     },
     async register(payload) {
-      const response = await axios.post('/User/register', payload)
+      const response = await axios
+        .post("/User/register", payload)
         .then((response) => {
           return response.data;
         })
@@ -34,14 +36,14 @@ export const useAppStore = defineStore('app', {
       return response;
     },
     isLoggedIn() {
-      let token = localStorage.getItem('token');
+      let token = localStorage.getItem("token");
       return token !== null && token.length > 0;
     },
     getToken() {
-      return this.isLoggedIn() ? localStorage.getItem('token') : null;
+      return this.isLoggedIn() ? localStorage.getItem("token") : null;
     },
     getUser() {
-      const userJson = localStorage.getItem('user');
+      const userJson = localStorage.getItem("user");
       if (userJson) {
         let user = JSON.parse(userJson);
         return user;
@@ -49,7 +51,8 @@ export const useAppStore = defineStore('app', {
       return null;
     },
     updateAvatar(avatar) {
-      const response = axios.post('/User/update-avatar', avatar)
+      const response = axios
+        .post("/User/update-avatar", avatar)
         .then((response) => {
           return response.data;
         })
@@ -59,13 +62,14 @@ export const useAppStore = defineStore('app', {
       return response;
     },
     getPosts() {
-      const response = axios.get('/getAllPosts')
+      const response = axios
+        .get("/getAllPosts")
         .then((response) => {
           const parsedResponse = {
             isSuccess: response.data.isSuccess,
             response: JSON.parse(response.data.response),
-            errors: response.data.error
-          }
+            errors: response.data.error,
+          };
           return parsedResponse;
         })
         .catch((error) => {
@@ -74,13 +78,14 @@ export const useAppStore = defineStore('app', {
       return response;
     },
     createPost(payload) {
-      const response = axios.post('/createPost', payload)
+      const response = axios
+        .post("/createPost", payload)
         .then((response) => {
           const parsedResponse = {
             isSuccess: response.data.isSuccess,
             response: JSON.parse(response.data.response),
-            errors: response.data.error
-          }
+            errors: response.data.error,
+          };
           return parsedResponse;
         })
         .catch((error) => {
@@ -89,7 +94,8 @@ export const useAppStore = defineStore('app', {
       return response;
     },
     deletePost(id) {
-      const response = axios.delete('/deletePost', { data: { postId: id } })
+      const response = axios
+        .delete("/deletePost", { data: { postId: id } })
         .then((response) => {
           return response.data;
         })
@@ -99,7 +105,8 @@ export const useAppStore = defineStore('app', {
       return response;
     },
     editPost(payload) {
-      const response = axios.put('/updatePost', payload)
+      const response = axios
+        .put("/updatePost", payload)
         .then((response) => {
           return response.data;
         })
@@ -109,13 +116,14 @@ export const useAppStore = defineStore('app', {
       return response;
     },
     createFeedback(payload) {
-      const response = axios.post('/createFeedback', payload)
+      const response = axios
+        .post("/createFeedback", payload)
         .then((response) => {
           const parsedResponse = {
             isSuccess: response.data.isSuccess,
             response: JSON.parse(response.data.response),
-            errors: response.data.error
-          }
+            errors: response.data.error,
+          };
           return parsedResponse;
         })
         .catch((error) => {
@@ -124,7 +132,8 @@ export const useAppStore = defineStore('app', {
       return response;
     },
     deleteFeedback(id) {
-      const response = axios.delete('/deleteFeedback', { data: { postId: id } })
+      const response = axios
+        .delete("/deleteFeedback", { data: { postId: id } })
         .then((response) => {
           return response.data;
         })
@@ -134,13 +143,14 @@ export const useAppStore = defineStore('app', {
       return response;
     },
     createComment(payload) {
-      const response = axios.post('/createComment', payload)
+      const response = axios
+        .post("/createComment", payload)
         .then((response) => {
           const parsedResponse = {
             isSuccess: response.data.isSuccess,
             response: JSON.parse(response.data.response),
-            errors: response.data.error
-          }
+            errors: response.data.error,
+          };
           return parsedResponse;
         })
         .catch((error) => {
@@ -149,7 +159,8 @@ export const useAppStore = defineStore('app', {
       return response;
     },
     deleteComment(id) {
-      const response = axios.delete('/deleteComment', { data: { commentId: id } })
+      const response = axios
+        .delete("/deleteComment", { data: { commentId: id } })
         .then((response) => {
           return response.data;
         })
@@ -159,7 +170,8 @@ export const useAppStore = defineStore('app', {
       return response;
     },
     editComment(payload) {
-      const response = axios.put('/updateComment', payload)
+      const response = axios
+        .put("/updateComment", payload)
         .then((response) => {
           return response.data;
         })
@@ -169,7 +181,8 @@ export const useAppStore = defineStore('app', {
       return response;
     },
     verifyUser() {
-      const response = axios.get('/User/verify')
+      const response = axios
+        .get("/User/verify")
         .then((response) => {
           return response.data;
         })
@@ -177,6 +190,22 @@ export const useAppStore = defineStore('app', {
           return error.response.data;
         });
       return response;
-    }
-  }
-})
+    },
+    getAllExercises() {
+      const response = axios
+        .get("/getAllExercises")
+        .then((response) => {
+          const parsedResponse = {
+            isSuccess: response.data.isSuccess,
+            response: JSON.parse(response.data.response),
+            errors: response.data.error,
+          };
+          return parsedResponse;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
+    },
+  },
+});
