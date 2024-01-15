@@ -79,7 +79,9 @@
       </v-btn>
       <div v-if="!isDrawerExpanded">
         <v-icon color="red">mdi-fire</v-icon>
-        <span class="text-body-1 font-weight-light text-orange-darken-4">Workout Streak: {{ computeStreak() }}</span>
+        <span class="text-body-1 font-weight-light text-orange-darken-4"
+          >Workout Streak: {{ computeStreak() }}</span
+        >
       </div>
     </div>
 
@@ -195,6 +197,13 @@ export default {
         var date = new Date(workout.DateCreated).getDate();
         dates.push(date);
       });
+
+      if (dates.length === 0) return 0;
+      if (
+        dates[0] !== new Date().getDate() ||
+        dates[0] !== new Date().getDate()
+      )
+        return 0;
       var streak = 1;
 
       for (var i = 1; i < dates.length; i++) {
