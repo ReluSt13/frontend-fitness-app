@@ -5,11 +5,11 @@
               class="d-flex justify-center"
               cols="1"
             >
-                <v-avatar :image="comment.User.Avatar" icon="mdi-account" size="40" color="#999"></v-avatar>
+                <v-avatar :image="comment.User?.Avatar" icon="mdi-account" size="40" color="#999"></v-avatar>
             </v-col>
             <v-col cols="11">
                 <div class="d-flex">
-                    <div class="text-body-2 font-weight-light mr-1 text-deep-orange-darken-3">{{ comment.User.UserName }}</div>
+                    <div class="text-body-2 font-weight-light mr-1 text-deep-orange-darken-3">{{ comment.UserName }}</div>
                     <v-tooltip
                       :text="formatLongDate(comment.DateCreated)"
                       bottom
@@ -41,6 +41,7 @@
                                     :key="index"
                                     :base-color="item.color"
                                     density="compact"
+                                    :disabled="item.disabled"
                                     :slim="true"
                                     :value="index"
                                     @click="item.action"
@@ -100,15 +101,27 @@ export default {
             });
         } else {
             this.items.push({
-                title: 'Report',
+                title: 'Report (Coming soon)',
                 action: this.handleReportComment,
-                icon: 'mdi-flag'
+                icon: 'mdi-flag',
+                disabled: true
+            });
+        }
+        if (this.isAdmin) {
+            this.items.push({
+                title: 'Delete (Admin)',
+                action: this.handleDeletePost,
+                icon: 'mdi-delete',
+                color: 'red-darken-4'
             });
         }
     },
     computed: {
         isOwner() {
             return this.user.id === this.comment.UserId;
+        },
+        isAdmin() {
+            return this.user?.roles?.includes('Admin');
         }
     },
     methods: {

@@ -41,6 +41,7 @@
                                     :key="index"
                                     :base-color="item.color"
                                     density="compact"
+                                    :disabled="item.disabled"
                                     :slim="true"
                                     :value="index"
                                     @click="item.action"
@@ -84,9 +85,12 @@
                                 <v-list-item
                                     v-for="feedback in post.Feedbacks"
                                     :key="feedback.UserId"
-                                    :prepend-avatar="feedback.User.Avatar"
                                     :title="feedback.UserName"
-                                ></v-list-item>
+                                >
+                                    <template #prepend>
+                                        <v-avatar :image="feedback.User?.Avatar" icon="mdi-account" size="40" color="#999"></v-avatar>
+                                    </template>
+                                </v-list-item>
                             </v-list>
                         </v-menu>
                         <span v-else class="text-caption">0</span>
@@ -150,6 +154,9 @@ export default {
         isOwner() {
             return this.user?.id === this.post.User.Id;
         },
+        isAdmin() {
+            return this.user?.roles?.includes('Admin');
+        },
         liked() {
             return this.post.Feedbacks && this.post.Feedbacks.length > 0 && !!this.post.Feedbacks.find(f => f.UserId === this.user?.id);
         },
@@ -169,9 +176,18 @@ export default {
             });
         } else {
             this.items.push({
-                title: 'Report',
+                title: 'Report (Coming soon)',
                 action: this.handleReportPost,
-                icon: 'mdi-flag'
+                icon: 'mdi-flag',
+                disabled: true
+            });
+        }
+        if (this.isAdmin) {
+            this.items.push({
+                title: 'Delete (Admin)',
+                action: this.handleDeletePost,
+                icon: 'mdi-delete',
+                color: 'red-darken-4'
             });
         }
     },

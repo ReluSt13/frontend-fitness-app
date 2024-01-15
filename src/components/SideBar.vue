@@ -2,17 +2,32 @@
   <v-navigation-drawer theme="dark" :width="drawerWidth">
     <v-divider></v-divider>
     <v-container class="d-flex flex-column align-center">
-      <v-avatar
-        :image="user?.avatar"
-        icon="mdi-account"
-        size="100"
-        color="#999"
-      ></v-avatar>
+      <v-dialog width="600">
+        <template #activator="{ props }">
+          <v-avatar
+            class="hover"
+            :image="user?.avatar"
+            icon="mdi-account"
+            size="100"
+            color="#999"
+            v-bind="props"
+          ></v-avatar>
+        </template>
+        <template #default="{ isActive }">
+          <update-avatar-modal
+            @update:avatar="handleUpdateAvatar"
+            @close:modal="isActive.value = false"
+          ></update-avatar-modal>
+        </template>
+      </v-dialog>
       <div class="text-body-1 mt-2">
         Welcome,
         <span class="text-deep-orange-darken-2 mr-1">{{ user?.name }}</span>
         <v-icon v-if="isVerified" size="x-small" color="deep-orange-darken-2"
           >mdi-check-decagram</v-icon
+        >
+        <v-icon v-if="isAdmin" size="x-small" color="deep-orange-darken-2"
+          >mdi-shield-crown</v-icon
         >
       </div>
     </v-container>
@@ -74,11 +89,13 @@
 import { useAppStore } from "../store/app.js";
 import CreatePost from "./CreatePost.vue";
 import CreateWorkout from "./CreateWorkout.vue";
+import UpdateAvatarModal from "./UpdateAvatarModal.vue";
 import { Event } from "../utils/constant.js";
 export default {
   components: {
     CreatePost,
     CreateWorkout,
+    UpdateAvatarModal,
   },
   emits: [Event.CREATE_POST],
   data() {
@@ -91,6 +108,9 @@ export default {
   computed: {
     isVerified() {
       return this.user?.roles?.includes("Verified");
+    },
+    isAdmin() {
+      return this.user?.roles?.includes("Admin");
     },
     isOnHomeRoute() {
       return this.$route.name === "Home";
@@ -124,6 +144,18 @@ export default {
       this.drawerWidth = this.isDrawerExpanded ? 600 : 300;
       this.rail = !this.isDrawerExpanded;
     },
+    async handleUpdateAvatar(newAvatar) {
+      const result = await this.appStore.updateAvatar({ avatar: newAvatar });
+      if (result.isSuccess) {
+        this.appStore.logout();
+        this.$router.push({ name: "Login" });
+        this.appStore.snackbarInfo = {
+          message: "Avatar updated. Please log in again.",
+          color: "success",
+        };
+        this.appStore.openSnackbar(true);
+      }
+    },
   },
   setup() {
     const appStore = useAppStore();
@@ -134,3 +166,11 @@ export default {
   },
 };
 </script>
+
+<style>
+.hover:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: transform 0.2s;
+}
+</style>
