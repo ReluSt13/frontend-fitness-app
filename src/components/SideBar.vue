@@ -39,7 +39,7 @@
       @create:post="handleCreatePost"
     ></create-post>
 
-    <div class="d-flex flex-column pa-2" style="gap: 16px">
+    <div class="d-flex flex-column pa-2 align-center" style="gap: 16px">
       <v-btn
         v-if="!isDrawerExpanded"
         to="/"
@@ -77,14 +77,16 @@
       >
         New workout
       </v-btn>
+      <div v-if="!isDrawerExpanded">
+        <v-icon color="red">mdi-fire</v-icon>
+        <span class="text-body-1 font-weight-light text-orange-darken-4">Workout Streak: {{ computeStreak() }}</span>
+      </div>
     </div>
 
     <create-workout
       v-if="isDrawerExpanded"
       @cancelWorkout="toggleExpandDrawer"
     ></create-workout>
-
-    <div>{{ computeStreak() }}</div>
 
     <template v-slot:append>
       <div class="pl-2 pr-2">
@@ -189,17 +191,13 @@ export default {
     },
     computeStreak() {
       const dates = [];
-      console.log(this.workouts);
       this.workouts.forEach((workout) => {
         var date = new Date(workout.DateCreated).getDate();
         dates.push(date);
       });
-
-      console.log(dates);
       var streak = 1;
 
       for (var i = 1; i < dates.length; i++) {
-        console.log(dates[i], streak);
         if (dates[i] === dates[i - 1]) continue;
         if (dates[i] === dates[i - 1] - 1) streak++;
         else break;
