@@ -68,9 +68,9 @@ export const useAppStore = defineStore("app", {
           const parsedResponse = {
             isSuccess: response.data.isSuccess,
             response: JSON.parse(response.data.response),
-            errors: response.data.error
-          }
-          parsedResponse.response.forEach(post => {
+            errors: response.data.error,
+          };
+          parsedResponse.response.forEach((post) => {
             if (post.Comments === null) {
               post.Comments = [];
             }
@@ -92,8 +92,8 @@ export const useAppStore = defineStore("app", {
           const parsedResponse = {
             isSuccess: response.data.isSuccess,
             response: JSON.parse(response.data.response),
-            errors: response.data.error
-          }
+            errors: response.data.error,
+          };
           if (parsedResponse.response.Comments === null) {
             parsedResponse.response.Comments = [];
           }
@@ -209,6 +209,38 @@ export const useAppStore = defineStore("app", {
     getAllExercises() {
       const response = axios
         .get("/getAllExercises")
+        .then((response) => {
+          const parsedResponse = {
+            isSuccess: response.data.isSuccess,
+            response: JSON.parse(response.data.response),
+            errors: response.data.error,
+          };
+          return parsedResponse;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
+    },
+    createWorkout(payload) {
+      const response = axios
+        .post("/createWorkout", payload)
+        .then((response) => {
+          const parsedResponse = {
+            isSuccess: response.data.isSuccess,
+            response: JSON.parse(response.data.response),
+            errors: response.data.error,
+          };
+          return parsedResponse;
+        })
+        .catch((error) => {
+          return error.response.data;
+        });
+      return response;
+    },
+    createWorkoutExercise(payload) {
+      const response = axios
+        .post("/createWorkoutExercise", payload)
         .then((response) => {
           const parsedResponse = {
             isSuccess: response.data.isSuccess,

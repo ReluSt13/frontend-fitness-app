@@ -40,7 +40,6 @@ export default {
     const postsResult = await this.appStore.getPosts();
     if (postsResult.isSuccess) {
       this.posts = postsResult.response;
-      console.log(this.posts);
     }
   },
   methods: {

@@ -95,6 +95,7 @@ export default {
       workoutName: "",
       exercises: [{ name: "", reps: "", weight: "" }],
       exerciseNames: [],
+      exerciseNamesMap: {},
     };
   },
   async created() {
@@ -102,9 +103,9 @@ export default {
     const exerciseNamesResult = await this.appStore.getAllExercises();
     if (exerciseNamesResult.isSuccess) {
       exerciseNamesResult.response.forEach((element) => {
+        this.exerciseNamesMap[element.Name] = element.Id;
         this.exerciseNames.push(element.Name);
       });
-      console.log(this.exerciseNames);
     }
   },
   methods: {
@@ -116,12 +117,43 @@ export default {
       // Remove the selected exercise
       this.exercises.splice(index, 1);
     },
-    submitWorkoutForm() {
+    async submitWorkoutForm() {
       // Handle form submission logic here
       // You can access the workoutName and exercises data and perform further actions
       if (this.formStatus) {
-        console.log("Workout Name:", this.workoutName);
-        console.log("Exercises:", this.exercises);
+        const result = await this.appStore.createWorkout({
+          name: this.workoutName,
+        });
+
+        if (result.isSuccess) {
+          const workoutId = result.response.Id;
+
+          console.log("Exercise Names Map: ", this.exerciseNamesMap);
+          console.log("Exercises: ", this.exercises);
+
+          for (var exercise of this.exercises) {
+            console.log("Exercise :::: ", exercise);
+            const exerciseId = this.exerciseNamesMap[exercise.name];
+            const payload = {
+              workoutId: workoutId,
+              exerciseId: exerciseId,
+              reps: exercise.reps,
+              weight: exercise.weight,
+              sets: 1,
+            };
+            console.log("Payload: ", payload);
+            const exerciseResult = await this.appStore.createWorkoutExercise(
+              payload
+            );
+            if (exerciseResult.isSuccess) {
+              console.log("Exercise 1: ", exerciseResult.response);
+            }
+          }
+        }
+
+        this.workoutName = "";
+        this.exercises = [];
+        this.$emit("cancelWorkout");
       }
       // Add logic to send data to the server or perform other actions
     },
