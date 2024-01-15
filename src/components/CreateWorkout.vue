@@ -21,6 +21,21 @@
             :rules="[(v) => !!v || 'Exercise name is required']"
           ></v-select>
         </v-col>
+
+        <v-col>
+          <v-text-field
+            v-model="exercise.sets"
+            label="Sets"
+            type="number"
+            class="sets-select"
+            required
+            :rules="[
+              (v) => !!v || 'Required',
+              (v) => v > 0 || 'Bro at least 1',
+            ]"
+          ></v-text-field>
+        </v-col>
+
         <v-col>
           <!-- Number field for Reps -->
           <v-text-field
@@ -29,9 +44,10 @@
             type="number"
             class="reps-select"
             required
-            :rules="[(v) => !!v || 'Required']"
+            :rules="[(v) => !!v || 'Required', (v) => v > 0 || 'Do some reps']"
           ></v-text-field>
         </v-col>
+
         <v-col>
           <!-- Number field for Weight -->
           <v-text-field
@@ -40,7 +56,10 @@
             type="number"
             class="weight-select"
             required
-            :rules="[(v) => !!v || 'Required']"
+            :rules="[
+              (v) => !!v || 'Required',
+              (v) => v > 0 || 'Use some weight',
+            ]"
           ></v-text-field>
         </v-col>
         <v-col>
@@ -122,33 +141,25 @@ export default {
       // You can access the workoutName and exercises data and perform further actions
       if (this.formStatus) {
         const result = await this.appStore.createWorkout({
-          name: this.workoutName,
+          name: this.workoutName.trim(),
         });
 
         if (result.isSuccess) {
           this.appStore.newWorkout = result.response;
           const workoutId = result.response.Id;
 
-          console.log("Exercise Names Map: ", this.exerciseNamesMap);
-          console.log("Exercises: ", this.exercises);
-
           for (var exercise of this.exercises) {
-            console.log("Exercise :::: ", exercise);
             const exerciseId = this.exerciseNamesMap[exercise.name];
             const payload = {
               workoutId: workoutId,
               exerciseId: exerciseId,
               reps: exercise.reps,
               weight: exercise.weight,
-              sets: 1,
+              sets: exercise.sets,
             };
-            console.log("Payload: ", payload);
             const exerciseResult = await this.appStore.createWorkoutExercise(
               payload
             );
-            if (exerciseResult.isSuccess) {
-              console.log("Exercise 1: ", exerciseResult.response);
-            }
           }
         }
 
