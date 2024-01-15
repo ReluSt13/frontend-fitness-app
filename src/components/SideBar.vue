@@ -166,7 +166,7 @@ export default {
     },
     toggleExpandDrawer() {
       this.isDrawerExpanded = !this.isDrawerExpanded;
-      this.drawerWidth = this.isDrawerExpanded ? 600 : 300;
+      this.drawerWidth = this.isDrawerExpanded ? 700 : 300;
       this.rail = !this.isDrawerExpanded;
     },
     async handleUpdateAvatar(newAvatar) {
