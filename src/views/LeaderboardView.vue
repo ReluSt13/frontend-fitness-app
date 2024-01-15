@@ -2,7 +2,7 @@
     <v-app>
       <SideBar></SideBar>
       <v-main class="d-flex flex-column align-center justify-center">
-        <div class="bg-grey-darken-4 rounded-lg w-25">
+        <div class="bg-grey-darken-4 rounded-lg" :class="{ 'w-25': !isMobile, 'w-100': isMobile }">
             <div 
               v-for="(user, index) in leaderboardUsers" 
               :key="user.user.Id"
@@ -34,10 +34,15 @@
       return {
         user: {},
         posts: [],
-        leaderboardUsers: []
+        leaderboardUsers: [],
+        isMobile: false
       };
     },
     async created() {
+      this.$nextTick(() => {
+        window.addEventListener('resize', this.onResize);
+        this.onResize();
+      });
       this.user = this.appStore.getUser();
       const postsResult = await this.appStore.getPosts();
       if (postsResult.isSuccess) {
@@ -63,6 +68,9 @@
         this.leaderboardUsers.sort((a, b) => b.feedbackCount - a.feedbackCount);
       }
     },
+    beforeUnmount() {
+      window.removeEventListener('resize', this.onResize);
+    },
     methods: {
         getBackgroundClass(index) {
             switch (index) {
@@ -75,6 +83,9 @@
                 default:
                     return 'bg-black';
             }
+        },
+        onResize() {
+            this.isMobile = window.innerWidth <= 600;
         }
     },
     setup() {
