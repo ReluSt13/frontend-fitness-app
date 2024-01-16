@@ -9,11 +9,11 @@
                 @click="handleClose"
               ></v-btn>
           </v-col>
-          <v-col class="d-flex align-center justify-center" cols="8">
-            <v-icon>mdi-arm-flex</v-icon>
+          <v-col class="d-flex align-center justify-center pa-0" cols="8">
+            <v-icon v-if="!appStore.isMobile" color="orange-darken-4">mdi-arm-flex</v-icon>
             <div
               class="ml-2"
-              :class="{'text-h4': !appStore.isMobile, 'text-body-1': appStore.isMobile}"
+              :class="{'text-h5': !appStore.isMobile, 'text-body-1': appStore.isMobile}"
             >
                 {{ workout.Name }}
             </div>
@@ -26,7 +26,7 @@
                     <div 
                       v-bind="props" 
                       class="ml-2 text-grey-darken-2"
-                      :class="{'text-body-1': !appStore.isMobile, 'text-caption': appStore.isMobile}"
+                      :class="{'text-body-2': !appStore.isMobile, 'text-caption': appStore.isMobile}"
                     >• {{ formatShortDate(workout.DateCreated) }}</div>
                 </template>
             </v-tooltip>
