@@ -1,5 +1,5 @@
 <template>
-    <v-container class="bg-grey-darken-4 rounded-lg">
+    <v-container class="bg-grey-darken-4 rounded-lg" style="overflow-y: scroll;">
       <v-row>
           <v-col cols="1">
               <v-btn

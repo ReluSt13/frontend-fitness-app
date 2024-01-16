@@ -35,11 +35,13 @@
                       <v-btn
                         text="Delete"
                         color="red"
+                        variant="outlined"
                         @click="deleteWorkout(workout)"
                       ></v-btn>
 
                       <v-btn
                         text="Close"
+                        variant="outlined"
                         @click="isActive.value = false"
                       ></v-btn>
                     </v-card-actions>
